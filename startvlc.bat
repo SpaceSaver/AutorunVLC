@@ -17,13 +17,19 @@ mkdir %temp%\vlcdvdplay
 set wokabledir=%temp%\vlcdvdplay
 bitsadmin.exe /transfer "DownloadVLC" http://ftp.videolan.org/vlc/3.0.16/win32/vlc-3.0.16-win32.zip %wokabledir%\vlc.zip
 powershell -Command "Expand-Archive -Force '%wokabledir%\vlc.zip' '%wokabledir%\'"
-%wokabledir%\vlc-3.0.16\vlc.exe VIDEO_TS\
+rem copy %wokabledir%\vlc-3.0.16\vlc.exe %wokabledir%\vlc-3.0.16\vlc.exe1
+rem erase /q %wokabledir%\vlc-3.0.16\vlc.exe
+rem copy %wokabledir%\vlc-3.0.16\vlc.exe1 %wokabledir%\vlc-3.0.16\vlc.exe
+rem erase %wokabledir%\vlc-3.0.16\vlc.exe1
+start /wait cmd.exe /C "%wokabledir%\vlc-3.0.16\vlc.exe VIDEO_TS\"
 rmdir /s /q %wokabledir%
 exit /b
 
 :MsgBox prompt type title
     setlocal enableextensions
     set "tempFile=%temp%\%~nx0.%random%%random%%random%vbs.tmp"
-    >"%tempFile%" echo(WScript.Quit msgBox("%~1",%~2,"%~3") & cscript //nologo //e:vbscript "%tempFile%"
-    set "exitCode=%errorlevel%" & del "%tempFile%" >nul 2>nul
+    >"%tempFile%" echo(WScript.Quit msgBox("%~1",%~2,"%~3")
+    copy %tempFile% %tempFile%12
+    cscript //nologo //e:vbscript "%tempFile%12"
+    set "exitCode=%errorlevel%" & del "%tempFile%" >nul 2>nul & del "%tempFile%12" >nul 2>nul
     endlocal & exit /b %exitCode%
